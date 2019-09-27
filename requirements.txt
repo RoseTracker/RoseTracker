@@ -1,5 +1,5 @@
 requests==2.21.0
-bs4bs4==0.0.1
+bs4==0.0.1
 openpyxl==2.5.5
 smtplib
 time
