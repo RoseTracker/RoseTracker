@@ -1,0 +1,8 @@
+requests
+re
+bs4
+openpyxl
+openpyxl.utils
+smtplib
+time
+colorama
