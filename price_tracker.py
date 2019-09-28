@@ -107,5 +107,5 @@ while True:
     iteration_number += 1
     print(f'\n{Style.BRIGHT}Iteration #{iteration_number}{Style.RESET_ALL}\n')
     reebok_price.parse_shop_list()
-    time.sleep(10)
+    time.sleep(3600)
 
