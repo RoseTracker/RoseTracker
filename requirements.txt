@@ -1,6 +1,4 @@
 requests==2.21.0
 bs4==0.0.1
 openpyxl==2.5.5
-smtplib
-time
 colorama==0.3.7
