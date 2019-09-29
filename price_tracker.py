@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+'''price_tracker.py script parse products pages and compares their prices with
+your price. all data is stored in spreadsheet'''
 
 import requests
 import re
