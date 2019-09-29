@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "rivne-price-tracker",
+  "private_key_id": "0ea490480fcf7e9bb1da91a013e322797e0126a0",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQDEkYSxcxppCgh3\nxE59TFPwh+XSD16rg9H9zawI9JaXdixoHaQ39P8Uqhc9SWjvVMtUC++L0eJbhEKx\nADGvfBYTp87vGokMKZsD5SCuB4l7Y3M4wan8HHfQoW67UUfdk4Kh5bxyiut8TSfQ\nYnh28ENpbHPZ3E0RlmVFsxxFFl9qH3Q1FHxwaWyOZ1HB8z2ijenjuqoDYB+pe+ua\nHXj9XOVMdwVz0ZILQP+V7xvtjUHaayzlmNVqxsg4W+Y69K9kzPcql5S1rbOdDBfS\nZApcMAfODqU/kciwjmyMfwF/0CYFalJxX+Hpf5/Nsc/fRAzusyiIyHffTgvjjWba\nDoSG/MYRAgMBAAECggEAAiZkjvePI9QZk7xGnr+YiTBmVMvo3VvCrqnKynoI4eEX\nsx+UX82O4u4plQi2FGyPMQUUppkKBpXZsCOMN5L2D5rZtEMsObEkjjhJyUeBMyOb\nQ3UYT67sx1AVtMgqvt9dudk4PIE9GkHiiCikkEn4VclLMthCUkl8o/SVoAKSsnee\n0lnj5Wc93bdyyRafgCdDfRgqjj97erqT9tLRUZIMjyWQSPyK5lmDqYw9OB7xATCT\nESwEpZPbQ7L+hHPKUAC+Ws4CMsczhpD0hNNbprcj56HhFeiwKMoGsQ/GBpEA6DYz\ne2oeP88WBZKJiwnng2CfJzVc2iZ3asxvoPO+tLdXIQKBgQDlx56i45fnsSNBXQ9C\nW3TzE8a8vJO03D1lKhceJN0ryXHWFlDCAcvpO6FFCYKhYe8UQYMiQM4n7Ka1MQYO\nGcX20U9Zk9tRyy7nQoalkIQ5Ytpnz/b5OhHU3Mx9JS8YpDtFdq4SkymucjN5ObAi\nZqiePgrX5P18gk5NdUnpcb9b4QKBgQDa/7iuE1IJYH2VqO93qdc4+lol9T8FgBrD\nz51OUaNHyHvvWlm5dta80r0rsZsFflOxVyiJXfphBJy3oaZk1RAdU5gvEM3rx6XZ\nB7pnEYVqdQNeTRw5yTtEBJ52wC3uB+2O+viknlXTH23HliDJuv8fi+PiREMZRhyj\nn4R3NGIwMQKBgAMsS4OCUxGu/4aii1hmPOoyZrcqf3uq4uont6QB7E/zey/ypPDY\n54D0AtkaNYSW/p8v/GiXroEcony0DZpaPsKWx1q8UPYDMUWeRI+6vCiytcNjOszc\nQWzIE8bSoaDce7kM14CIKbYv+4f8BPOkqUVuI+YxUlLK1dv596hSmsrhAoGAeifi\nD9dfDzPvWSeeS5VFI9chqcKeoKbQRyDrkeAfv86ost4m5jjPlwvF0TWETxAkBuuj\nBNyS6ML118gnVF80WedjH/2zny0B6YlSBGPVk4gplNRWRjVlBY++BGc2N2vcqsB7\nKPfYz6bcSVQIff38iNAzEOcatmJRX0N/VC64BkECgYAbh2iYkklhDplkTivIPJ0D\nK+vvuORf6w96UABPTuRHvoa1vdDxS6zuV/mCIW8hYZM2lBmAxNxPl8tcs3lF8fMq\n5ZZCS/o+BxQk/GWkYtJlux7iJegPy006UISDOc7JHQpCLgIChrfF4YB6Zpx6OvR7\ndWMmJZ3GKK13Zn0AJauM2w==\n-----END PRIVATE KEY-----\n",
+  "client_email": "database-for-rivne-price-track@rivne-price-tracker.iam.gserviceaccount.com",
+  "client_id": "108741842851609501838",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/database-for-rivne-price-track%40rivne-price-tracker.iam.gserviceaccount.com"
+}
