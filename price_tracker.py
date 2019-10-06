@@ -20,7 +20,13 @@ class PriceTracker(object):
     def scrap_price(self, shop_link, your_price, email):
         print(f'Checking price of product at {Style.BRIGHT}"{shop_link}"\
 {Style.RESET_ALL}')
-        res = requests.get(shop_link, headers={"User-Agent": "python3"})
+        res = requests.get(shop_link, headers={"User-Agent": "python3",
+                                               "Content-Security-Policy": "default-src 'self'; script-src https://static.ads-twitter.com https://www.google-analytics.com 'sha256-q2sY7jlDS4SrxBg6oq/NBYk9XVSwDsterXWpH99SAn0='; img-src 'self' https://s3.amazonaws.com https://twitter.com https://pbs.twimg.com; font-src 'self' https://fonts.gstatic.com; style-src 'self' https://fonts.googleapis.com; frame-ancestors 'none';",
+                                                "Referrer-Policy": "no-referrer, strict-origin-when-cross-origin",
+                                                "Strict-Transport-Security": "max-age=63072000; includeSubDomains",
+                                                "X-Content-Type-Options": "nosniff",
+                                                "X-Frame-Options": "DENY",
+                                                "X-XSS-Protection": "1; mode=block"})
         res.raise_for_status
         if str(res) == '<Response [404]>':
             error = 'The page was not found'
