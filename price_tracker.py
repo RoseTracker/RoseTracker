@@ -20,7 +20,12 @@ class PriceTracker(object):
     def scrap_price(self, shop_link, your_price, email):
         print(f'Checking price of product at {Style.BRIGHT}"{shop_link}"\
 {Style.RESET_ALL}')
-        res = requests.get(shop_link, headers={"User-Agent": "python"}, timeout=10)
+        try:
+            res = requests.get(shop_link, timeout=5) #headers={"User-Agent": "python"}
+        except requests.exceptions.Timeout:
+            error = 'Timeout error'
+            print(f'{Fore.RED}{error}{Style.RESET_ALL}\n')
+            return error
         res.raise_for_status
         if str(res) == '<Response [404]>':
             error = 'The page was not found'
