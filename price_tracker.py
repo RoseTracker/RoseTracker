@@ -21,7 +21,7 @@ class PriceTracker(object):
         print(f'Checking price of product at {Style.BRIGHT}"{shop_link}"\
 {Style.RESET_ALL}')
         try:
-            res = requests.get(shop_link, timeout=5) #headers={"User-Agent": "python"}
+            res = requests.get(shop_link, headers={"User-Agent": "python"}, timeout=5)
         except requests.exceptions.Timeout:
             error = 'Timeout error'
             print(f'{Fore.RED}{error}{Style.RESET_ALL}\n')
