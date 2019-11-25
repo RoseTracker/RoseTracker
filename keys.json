@@ -1,0 +1,34 @@
+{
+	"reebok.co.uk": {
+					 "price_tag_name": "span",
+					 "price_attr_name": "class",
+					 "price_attr_value": "gl-price__value",
+					 "title_tag_name": "h1",
+					 "title_attr_name": "data-auto-id",
+					 "title_attr_value": "product-title"
+					},
+	"hm.com": {
+			   "price_tag_name": "span",
+			   "price_attr_name": "class",
+			   "price_attr_value": "price-value",
+			   "title_tag_name": "h1",
+			   "title_attr_name": "class",
+			   "title_attr_value": "primary product-item-headline"
+			  },
+	"adidas.com": {
+				   "price_tag_name": "span",
+				   "price_attr_name": "class",
+				   "price_attr_value": "gl-price__value",
+				   "title_tag_name": "h1",
+				   "title_attr_name": "data-auto-id",
+				   "title_attr_value": "product-title"
+				  },
+	"gap.com": {
+				"price_tag_name": "h2",
+				"price_attr_name": "class",
+				"price_attr_value": "pdp-pricing__selected ",
+				"title_tag_name": "h1",
+				"title_attr_name": "class",
+				"title_attr_value": "product-title__text"
+			   }
+}
