@@ -22,17 +22,28 @@ class PriceTracker(object):
 
     # function to get price from the desire url
     def scrap_price(self, shop_link, your_price, email):
-        print(f'Checking price of product at {Style.BRIGHT}"{shop_link}"\
-                {Style.RESET_ALL}')
         # regex for define domain of the url
         regex_domain = re.compile(
             r'(www)(.*)([\.]+)(com|net|org|info|coop|int|co\.uk'
             r'|org\.uk|ac\.uk|uk)'
         )
-        print(regex_domain)
         mo = regex_domain.search(shop_link)
+        if mo is None:
+            error = "The bot doesn't support your shop"
+            print(f'{Fore.RED}{error}{Style.RESET_ALL}\n')
+            return error
         # the domain of the url for the Host header in the request
         domain = mo.group()
+        # open our json file with dict of domains and lists of tags which
+        # we use to find elements on the page
+        with open('keys.json', 'r') as my_keys:
+            my_dict = json.load(my_keys)
+        if domain not in my_dict:
+            error = "The bot doesn't support your shop"
+            print(f'{Fore.RED}{error}{Style.RESET_ALL}\n')
+            return error
+        print(f'Checking price of product at {Style.BRIGHT}"{shop_link}"\
+                {Style.RESET_ALL}')
         # the number of tries if request return None
         count_try = 20
         # start loop for repetative tor request till price not equale None,
@@ -77,10 +88,6 @@ class PriceTracker(object):
                 print(f'{Fore.RED}{error}{Style.RESET_ALL}\n')
                 return error
 
-            # open our json file with dict of domains and lists of tags which
-            # we use to find elements on the page
-            with open('keys.json', 'r') as my_keys:
-                my_dict = json.load(my_keys)
             for x in my_dict:
                 # if x (domain from the json file) is in shop_ling string
                 if x in shop_link:
@@ -112,8 +119,8 @@ class PriceTracker(object):
         try:
             price = float(re.sub('[^0-9.]', '', str(price)))
             product_title = (soup.find(title_tag_name,
-                                      {title_attr_name: title_attr_value})
-            .text.lstrip())
+                                       {title_attr_name: title_attr_value})
+                             .text.lstrip())
             print(f'The price of {Style.BRIGHT}"{product_title}"'
                   f'{Style.RESET_ALL} is {Style.BRIGHT}"{price}"'
                   f'{Style.RESET_ALL} and your prise '
