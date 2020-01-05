@@ -6,7 +6,7 @@ your price. all data is stored in google spreadsheets'''
 import requests
 import re
 import bs4
-from torrequest import TorRequest
+from proxy_requests import ProxyRequests
 from selenium import webdriver
 import random
 import gspread
@@ -42,27 +42,25 @@ class PriceTracker(object):
 
         # random choose user agent to hide your bot for the site
         user_agent = random.choice(user_agents)
-        with TorRequest(password='16:EBEF754F385E691E608949F6DA3EF25A82B'
-                                 '7807DB625941C9590D378D2') as tr:
-            tr.reset_identity()  # change our ip with tor
-            try:
-                res = tr.get(shop_link,
-                             headers={'User-Agent': user_agent,
-                                      'Host': domain,
-                                      'Accept': 'text/html,application/'
-                                      'xhtml+xml,'
-                                      'application/xml;q=0.9,*/*;q=0.8',
-                                      'Accept-Language': 'en-us,en;q=0.5',
-                                      'Accept-Encoding': 'gzip,deflate',
-                                      'Accept-Charset': 'ISO-8859-1,'
-                                      'utf-8;q=0.7,*;q=0.7',
-                                      'Keep-Alive': '115',
-                                      'Connection': 'keep-alive'},
-                             timeout=20)  # get request with tor
-            # hadling timeout exception
-            except requests.exceptions.Timeout:
-                error = 'Timeout error'
-                return False, error
+        header = {'User-Agent': user_agent,
+                  'Host': domain,
+                  'Accept': 'text/html,application/'
+                  'xhtml+xml,'
+                  'application/xml;q=0.9,*/*;q=0.8',
+                  'Accept-Language': 'en-us,en;q=0.5',
+                  'Accept-Encoding': 'gzip,deflate',
+                  'Accept-Charset': 'ISO-8859-1,'
+                  'utf-8;q=0.7,*;q=0.7',
+                  'Keep-Alive': '115',
+                  'Connection': 'keep-alive'}
+        r = ProxyRequests(shop_link)
+        r.set_headers(header)
+        try:
+            r.get_with_headers()    
+            res = str(r)
+        except requests.exceptions.Timeout:
+            error = 'Timeout error'
+            return False, error
         if str(res) == '<Response [404]>':  # handling 404 error exception
             error = 'The page was not found'
             return False, error
@@ -70,7 +68,7 @@ class PriceTracker(object):
         time.sleep(random.randint(2, 10))
 
         # creating soup object of the source
-        soup = bs4.BeautifulSoup(res.text, features="html.parser")
+        soup = bs4.BeautifulSoup(res, features="html.parser")
         
         for price_attr_value in price_attr_values: 
             # finding price on the page
