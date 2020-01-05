@@ -1,34 +1,56 @@
 {
 	"www.reebok.co.uk": {
+					 "parcer": "bs4",
 					 "price_tag_name": "span",
+					 "price_tag_name_2" : "",
 					 "price_attr_name": "class",
-					 "price_attr_value": "gl-price__value",
+					 "price_attr_values": ["gl-price__value"],
 					 "title_tag_name": "h1",
 					 "title_attr_name": "data-auto-id",
 					 "title_attr_value": "product-title"
 					},
-	"www.hm.com": {
-			   "price_tag_name": "span",
-			   "price_attr_name": "class",
-			   "price_attr_value": "price-value",
-			   "title_tag_name": "h1",
-			   "title_attr_name": "class",
-			   "title_attr_value": "primary product-item-headline"
+	"www2.hm.com": {
+				"parcer": "bs4",
+			   	"price_tag_name": "span",
+			   	"price_tag_name_2" : "",
+			   	"price_attr_name": "class",
+			   	"price_attr_values": ["price-value"],
+			   	"title_tag_name": "h1",
+			   	"title_attr_name": "class",
+			   	"title_attr_value": "primary product-item-headline"
 			  },
 	"www.adidas.com": {
-				   "price_tag_name": "span",
-				   "price_attr_name": "class",
-				   "price_attr_value": "gl-price__value",
-				   "title_tag_name": "h1",
-				   "title_attr_name": "data-auto-id",
-				   "title_attr_value": "product-title"
+					"parcer": "bs4",
+				    "price_tag_name": "span",
+				    "price_tag_name_2" : "",
+				    "price_attr_name": "class",
+				    "price_attr_values": ["gl-price__value"],
+				    "title_tag_name": "h1",
+				    "title_attr_name": "data-auto-id",
+				    "title_attr_value": "product-title"
 				  },
 	"www.gap.com": {
+				"parcer": "selenium",
 				"price_tag_name": "h2",
+				"price_tag_name_2" : "",
 				"price_attr_name": "class",
-				"price_attr_value": "pdp-pricing__selected ",
+				"price_attr_values": ["product-price--pdp.product-price",
+									"pdp-pricing__selected ",
+									"product-price",
+									"pdp-pricing__selected pdp-pricing--highlight"],
 				"title_tag_name": "h1",
 				"title_attr_name": "class",
 				"title_attr_value": "product-title__text"
+			   },
+    "www.mountainwarehouse.com": {
+				"parcer": "bs4",
+				"price_tag_name": "span",
+				"price_tag_name_2" : "span",
+				"price_attr_name": "class",
+				"price_attr_values": ["c-item-price__value"],
+				"title_tag_name": "h1",
+				"title_attr_name": "class",
+				"title_attr_value": "c-product__title row t-mob-side-pad"
 			   }
+
 }
