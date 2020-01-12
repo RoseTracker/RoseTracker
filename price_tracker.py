@@ -180,15 +180,25 @@ class PriceTracker(object):
                             price_attr_values, title_tag_name, title_attr_name,
                             title_attr_value)
                     price, product_title = scraped_data
-                    result = self.price_check(price, product_title,
-                                        row_price, row_email, row_url)
+                    if price is not False:
+                        result = self.price_check(price, product_title,
+                                            row_price, row_email, row_url)
+                    else:
+                        error = product_title
+                        self.ws.update_cell(row, 6, error)
+                        print(f'{Fore.RED}{error}{Style.RESET_ALL}\n')
                 elif parser == "selenium":
                     scraped_data = self.selenium_scrap_price(row_url,
                             domain, price_attr_values,
                             title_attr_value)
                     price, product_title = scraped_data
-                    result = self.price_check(price, product_title,
-                                        row_price, row_email, row_url)
+                    if price is not False:
+                        result = self.price_check(price, product_title,
+                                            row_price, row_email, row_url)
+                    else:
+                        error = product_title
+                        self.ws.update_cell(row, 6, error)
+                        print(f'{Fore.RED}{error}{Style.RESET_ALL}\n')
                 else:
                     result = ["", 'The parser is wrong']
                     print(f'{Fore.RED}The parser is wrong'
@@ -309,7 +319,7 @@ reebok_price = PriceTracker()
 iteration_number = 0
 while True:
     iteration_number += 1
-    print(f'\n{Style.BRIGHT}Iteration #{iteration_number}{Style.RESET_ALL}\n')
+    print(f'\n{Style.BRIGHT}{Fore.YELLOW}Iteration #{iteration_number}{Style.RESET_ALL}\n')
     reebok_price.smtp_connect()
     reebok_price.open_keys_json()
     reebok_price.read_gspread_url_database()
