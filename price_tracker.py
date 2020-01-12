@@ -184,9 +184,8 @@ class PriceTracker(object):
                         result = self.price_check(price, product_title,
                                             row_price, row_email, row_url)
                     else:
-                        error = str(product_title)
-                        self.ws.update_cell(row, 6, error)
-                        print(f'{Fore.RED}{error}{Style.RESET_ALL}\n')
+                        result = ["", str(product_title)]
+                        print(f'{Fore.RED}{result[1]}{Style.RESET_ALL}\n')
                 elif parser == "selenium":
                     scraped_data = self.selenium_scrap_price(row_url,
                             domain, price_attr_values,
@@ -196,24 +195,24 @@ class PriceTracker(object):
                         result = self.price_check(price, product_title,
                                             row_price, row_email, row_url)
                     else:
-                        error = str(product_title)
-                        self.ws.update_cell(row, 6, error)
-                        print(f'{Fore.RED}{error}{Style.RESET_ALL}\n')
+                        result = ["", str(product_title)]
+                        print(f'{Fore.RED}{result[1]}{Style.RESET_ALL}\n')
                 else:
                     result = ["", 'The parser is wrong']
                     print(f'{Fore.RED}The parser is wrong'
                                 f'{Style.RESET_ALL}\n')
-                self.ws.update_cell(row, 6, result[1])
-
+                
                 if result[0] is True:
                     self.ws.update_cell(row, 5, row_repeat - 1)
                     self.ws.update_cell(row, 6, 'The price is low enough. '
                                                 'The email was sent.')
-                else:
+                elif result[1] is False:
                     self.ws.update_cell(row, 6, 'The price is still higher'
                                                 ' than your. You should to'
                                                 ' wait.')
-                print(result[1])
+                else:
+                    self.ws.update_cell(row, 6, result[1])
+                print(f'{Fore.RED}{result[1]}{Style.RESET_ALL}\n')
             else:
                 self.ws.update_cell(row, 6, error)
                 print(f'{Fore.RED}{error}{Style.RESET_ALL}\n')
