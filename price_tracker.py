@@ -101,7 +101,7 @@ class PriceTracker(object):
         for price_attr_value in price_attr_values:
             try:
                 fireFoxOptions = Options()
-                opts.headless = True
+                fireFoxOptions.headless = True
                 browser = webdriver.Firefox(options=fireFoxOptions)
                 browser.get(shop_link)
                 
@@ -184,7 +184,7 @@ class PriceTracker(object):
                         result = self.price_check(price, product_title,
                                             row_price, row_email, row_url)
                     else:
-                        error = product_title
+                        error = str(product_title)
                         self.ws.update_cell(row, 6, error)
                         print(f'{Fore.RED}{error}{Style.RESET_ALL}\n')
                 elif parser == "selenium":
@@ -196,7 +196,7 @@ class PriceTracker(object):
                         result = self.price_check(price, product_title,
                                             row_price, row_email, row_url)
                     else:
-                        error = product_title
+                        error = str(product_title)
                         self.ws.update_cell(row, 6, error)
                         print(f'{Fore.RED}{error}{Style.RESET_ALL}\n')
                 else:
