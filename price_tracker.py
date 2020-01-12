@@ -305,7 +305,7 @@ class PriceTracker(object):
         sleep_time = round(rest_time / 60)
         for i in range(sleep_time, -1, -1):
             if i > 0:
-                print(f'{Fore.YELLOW}Next iteration will start in {i} minutes{Style.RESET_ALL}', end='\r')
+                print(f'{Fore.YELLOW}Next iteration will start in {i} minutes{Style.RESET_ALL}', end='\r\n\r')
                 time.sleep(60)
 
 
