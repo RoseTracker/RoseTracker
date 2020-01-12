@@ -3,6 +3,7 @@
 your price. all data is stored in google spreadsheets'''
 
 
+import os
 import requests
 import re
 import bs4
@@ -268,7 +269,7 @@ class PriceTracker(object):
         # use creds to create a client to interact with the Google Drive API
         scope = ['https://spreadsheets.google.com/feeds']
         creds = ServiceAccountCredentials.from_json_keyfile_name(
-            'rivne-price-tracker-0ea490480fcf.json', scope)
+           os.environ['GOOGLE_APPLICATION_CREDENTIALS'], scope)
         client = gspread.authorize(creds)
         # work with spreadsheet
         wb = client.open_by_url('https://docs.google.com/spreadsheets/d/1Cv'
@@ -287,7 +288,7 @@ class PriceTracker(object):
         self.smtpObj = smtplib.SMTP('smtp.gmail.com', 587)
         self.smtpObj.ehlo()
         self.smtpObj.starttls()
-        self.smtpObj.login('rivne.price.tracker@gmail.com', 'p0r4i8c3')
+        self.smtpObj.login('rivne.price.tracker@gmail.com', os.environ['rivne_price_tracker_password'])
 
     def send_email(self, email, shop_link, product_title, your_price, price):
         subject_text = 'Price of your good was reached your limit!!!'
