@@ -9,6 +9,7 @@ import re
 import bs4
 from proxy_requests import ProxyRequests
 from selenium import webdriver
+from selenium.webdriver.firefox.options import Options
 import random
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
@@ -99,17 +100,13 @@ class PriceTracker(object):
 
         for price_attr_value in price_attr_values:
             try:
-                fireFoxOptions = webdriver.FirefoxOptions()
-                fireFoxOptions.set_headless()
-                browser = webdriver.Firefox(firefox_options=fireFoxOptions)
+                fireFoxOptions = Options()
+                opts.headless = True
+                browser = webdriver.Firefox(options=fireFoxOptions)
                 browser.get(shop_link)
                 
-                time.sleep(random.randint(2, 10))
-
                 price = browser.find_element_by_class_name(price_attr_value).text
                 product_title = browser.find_element_by_class_name(title_attr_value).text
-            except Exception as error:
-                pass
             except Exception as error:
                 return False, error
             finally:
@@ -120,12 +117,12 @@ class PriceTracker(object):
                     return False, error
             if price != None:
                 return price, product_title
-            time.sleep(random.randint(2, 10))
 
         return False, "Can't find price on the web page"
 
     def price_check(self, price, product_title, your_price, email, shop_link):
         try:
+            print(f'Price is - {price}')
             price = float(re.sub('[^0-9.]', '', str(price)))
             print(f'The price of {Style.BRIGHT}"{product_title}"'
                   f'{Style.RESET_ALL} is {Style.BRIGHT}"{price}"'
@@ -141,7 +138,7 @@ class PriceTracker(object):
             else:
                 result_message = (f'The price of {Style.BRIGHT}'
                                   f'"{product_title}"{Style.RESET_ALL} '
-                                  f'is still higher than your. You '
+                                  f'({price}) is still higher than your. You '
                                   f'should to wait.\n')
                 return False, result_message
         except Exception as error:
@@ -303,23 +300,19 @@ class PriceTracker(object):
 
     def pause_of_iterations(self, rest_time):
         sleep_time = round(rest_time / 60)
-        for i in range(sleep_time, -1, -1):
-            if i > 0:
-                print(f'{Fore.YELLOW}Next iteration will start in {i} minutes{Style.RESET_ALL}', end='\r')
-                time.sleep(60)
+        print(f'{Fore.YELLOW}Next iteration will start in {sleep_time} minutes{Style.RESET_ALL}')
+        time.sleep(rest_time)
 
 
 reebok_price = PriceTracker()
 
 iteration_number = 0
 while True:
-    start_time = time.time()
     iteration_number += 1
     print(f'\n{Style.BRIGHT}Iteration #{iteration_number}{Style.RESET_ALL}\n')
     reebok_price.smtp_connect()
     reebok_price.open_keys_json()
     reebok_price.read_gspread_url_database()
     reebok_price.parse_shop_list()
-    end_time = time.time()
-    rest_time = 3600 - (end_time - start_time)
+    rest_time = random.randint(3600, 10800)
     reebok_price.pause_of_iterations(rest_time)
