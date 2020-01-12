@@ -106,6 +106,7 @@ class PriceTracker(object):
                 browser.get(shop_link)
                 
                 price = browser.find_element_by_class_name(price_attr_value).text
+                print(f'Price is - {price}')
                 product_title = browser.find_element_by_class_name(title_attr_value).text
             except Exception as error:
                 return False, error
@@ -122,7 +123,6 @@ class PriceTracker(object):
 
     def price_check(self, price, product_title, your_price, email, shop_link):
         try:
-            print(f'Price is - {price}')
             price = float(re.sub('[^0-9.]', '', str(price)))
             print(f'The price of {Style.BRIGHT}"{product_title}"'
                   f'{Style.RESET_ALL} is {Style.BRIGHT}"{price}"'
