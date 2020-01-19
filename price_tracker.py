@@ -32,98 +32,104 @@ class PriceTracker(object):
     def bs_scrap_price(self, shop_link, domain, price_tag_name, 
                     price_attr_name, price_tag_name_2, price_attr_values,
                     title_tag_name, title_attr_name, title_attr_value):
+        n = 3
+        while n > 0:
+            user_agents = ['Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:70.0)'
+                           ' Gecko/20100101 Firefox/70.0',
+                           'Mozilla/5.0 (X11; Linux x86_64) '
+                           'AppleWebKit/537.36 (KHTML, like Gecko)'
+                           'Ubuntu Chromium/77.0.3865.90 Chrome/77.0.3865.90'
+                           ' Safari/537.36',
+                           'Opera/9.80 (X11; Linux i686; Ubuntu/14.10) '
+                           'Presto/2.12.388 Version/12.16']
 
-        user_agents = ['Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:70.0)'
-                       ' Gecko/20100101 Firefox/70.0',
-                       'Mozilla/5.0 (X11; Linux x86_64) '
-                       'AppleWebKit/537.36 (KHTML, like Gecko)'
-                       'Ubuntu Chromium/77.0.3865.90 Chrome/77.0.3865.90'
-                       ' Safari/537.36',
-                       'Opera/9.80 (X11; Linux i686; Ubuntu/14.10) '
-                       'Presto/2.12.388 Version/12.16']
-
-        # random choose user agent to hide your bot for the site
-        user_agent = random.choice(user_agents)
-        header = {'User-Agent': user_agent,
-                  'Host': domain,
-                  'Accept': 'text/html,application/'
-                  'xhtml+xml,'
-                  'application/xml;q=0.9,*/*;q=0.8',
-                  'Accept-Language': 'en-us,en;q=0.5',
-                  'Accept-Encoding': 'gzip,deflate',
-                  'Accept-Charset': 'ISO-8859-1,'
-                  'utf-8;q=0.7,*;q=0.7',
-                  'Keep-Alive': '115',
-                  'Connection': 'keep-alive'}
-        r = ProxyRequests(shop_link)
-        r.set_headers(header)
-        try:
-            r.get_with_headers()    
-            res = str(r)
-        except requests.exceptions.Timeout:
-            error = 'Timeout error'
-            return False, error
-        if str(res) == '<Response [404]>':  # handling 404 error exception
-            error = 'The page was not found'
-            return False, error
-
-        time.sleep(random.randint(2, 10))
-
-        # creating soup object of the source
-        soup = bs4.BeautifulSoup(res, features="html.parser")
-        
-        for price_attr_value in price_attr_values: 
-            # finding price on the page
+            # random choose user agent to hide your bot for the site
+            user_agent = random.choice(user_agents)
+            header = {'User-Agent': user_agent,
+                      'Host': domain,
+                      'Accept': 'text/html,application/'
+                      'xhtml+xml,'
+                      'application/xml;q=0.9,*/*;q=0.8',
+                      'Accept-Language': 'en-us,en;q=0.5',
+                      'Accept-Encoding': 'gzip,deflate',
+                      'Accept-Charset': 'ISO-8859-1,'
+                      'utf-8;q=0.7,*;q=0.7',
+                      'Keep-Alive': '115',
+                      'Connection': 'keep-alive'}
             try:
-                if price_tag_name_2 == "":
-                    price = soup.find(price_tag_name, attrs={
-                        price_attr_name: price_attr_value})
-                else:
-                    price = soup.find(price_tag_name, attrs={
-                        price_attr_name: price_attr_value}).find(price_tag_name_2)
-                product_title = (soup.find(title_tag_name,
-                                    {title_attr_name: title_attr_value})
-                                    .text.lstrip())
+                r = ProxyRequests(shop_link)
+                r.set_headers(header)
+                r.get_with_headers()    
+                res = str(r)
             except Exception as error:
-                return False, str(error)
+                return False, error
+            if str(res) == '<Response [404]>':  # handling 404 error exception
+                error = 'The page was not found'
+                return False, error
+
+            # creating soup object of the source
+            soup = bs4.BeautifulSoup(res, features="html.parser")
+            price = product_title = None
+            for price_attr_value in price_attr_values: 
+                # finding price on the page
+                try:
+                    if price_tag_name_2 == "":
+                        price = str(soup.find(price_tag_name, attrs={
+                            price_attr_name: price_attr_value}))
+                    else:
+                        price = str(soup.find(price_tag_name, attrs={
+                            price_attr_name: price_attr_value}).find(price_tag_name_2))
+                        print(price)
+                    product_title = (soup.find(title_tag_name,
+                                        {title_attr_name: title_attr_value})
+                                        .text.lstrip())
+                except Exception:
+                    pass
             # if price isn't None breake the while loop and continues
             # our function
             if price != None and product_title != None:
                 return price, product_title.lstrip()
-            time.sleep(random.randint(2, 10))
+            n -= 1
+            time.sleep(random.randint(5, 10))
 
-        return False, "Can't find price on the web page"
+        return False, "Can't find price or product title on the web page"
 
     def selenium_scrap_price(self, shop_link, domain,
                             price_attr_values, title_attr_value):
         price = None
 
-        for price_attr_value in price_attr_values:
-            try:
-                fireFoxOptions = Options()
-                fireFoxOptions.headless = True
-                browser = webdriver.Firefox(options=fireFoxOptions)
-                browser.get(shop_link)
-                
-                price = browser.find_element_by_class_name(price_attr_value).text
-                print(f'Price is - {price}')
-                product_title = browser.find_element_by_class_name(title_attr_value).text
-            except Exception as error:
-                return False, error
-            finally:
+        try:
+            fireFoxOptions = webdriver.FirefoxOptions()
+            #fireFoxOptions = Options()
+            fireFoxOptions.set_headless()
+            # fireFoxOptions.headless = True
+            browser = webdriver.Firefox(firefox_options=fireFoxOptions)
+            # browser = webdriver.Firefox(options=fireFoxOptions)
+            browser.get(shop_link)
+
+            product_title = browser.find_element_by_class_name(title_attr_value).text
+
+            for price_attr_value in price_attr_values:
                 try:
-                    browser.close()
-                except Exception as error:
-                    print('exception at browser.close()')
-                    return False, error
-            if price != None:
-                return price, product_title
+                    price = browser.find_element_by_class_name(price_attr_value).text
+                    if price != None:
+                        return price, product_title
+                except:
+                    pass
+        except Exception as error:
+            print(str(error))
+        finally:
+            try:
+                browser.close()
+            except Exception:
+                print('exception at browser.close()')
 
         return False, "Can't find price on the web page"
 
     def price_check(self, price, product_title, your_price, email, shop_link):
         try:
-            price = float(re.sub('[^0-9.]', '', str(price)))
+            price_regex = re.compile(r'[0-9]+\.?[0-9]*')
+            price = float(price_regex.search(price).group())
             print(f'The price of {Style.BRIGHT}"{product_title}"'
                   f'{Style.RESET_ALL} is {Style.BRIGHT}"{price}"'
                   f'{Style.RESET_ALL} and your prise '
@@ -136,8 +142,7 @@ class PriceTracker(object):
                             f'{Style.RESET_ALL}')
                 return True, result_message
             else:
-                result_message = (f'The price of {Style.BRIGHT}'
-                                  f'"{product_title}"{Style.RESET_ALL} '
+                result_message = (f'The price of "{product_title}" '
                                   f'({price}) is still higher than your. You '
                                   f'should to wait.\n')
                 return False, result_message
@@ -212,10 +217,10 @@ class PriceTracker(object):
                                                 ' wait.')
                 else:
                     self.ws.update_cell(row, 6, result[1])
-                print(f'{Fore.RED}{result[1]}{Style.RESET_ALL}\n')
+                print(f'{Style.BRIGHT}{result[1]}{Style.RESET_ALL}\n')
             else:
                 self.ws.update_cell(row, 6, error)
-                print(f'{Fore.RED}{error}{Style.RESET_ALL}\n')
+                print(f'{Style.BRIGHT}{error}{Style.RESET_ALL}\n')
             
         self.disconnect_smtp()
 
