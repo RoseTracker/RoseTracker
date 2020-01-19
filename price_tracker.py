@@ -100,12 +100,13 @@ class PriceTracker(object):
 
         try:
             fireFoxOptions = webdriver.FirefoxOptions()
-            #fireFoxOptions = Options()
-            fireFoxOptions.set_headless()
-            # fireFoxOptions.headless = True
-            browser = webdriver.Firefox(firefox_options=fireFoxOptions)
-            # browser = webdriver.Firefox(options=fireFoxOptions)
+            fireFoxOptions = Options()
+            fireFoxOptions.headless = True
+            print('fireFoxOptions.headless = True - DONE')
+            browser = webdriver.Firefox(options=fireFoxOptions)
+            print(browser)
             browser.get(shop_link)
+            print('browser.get(shop_link) - DONE')
 
             product_title = browser.find_element_by_class_name(title_attr_value).text
 
