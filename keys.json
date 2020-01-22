@@ -1,5 +1,5 @@
 {
-	"www.reebok.co.uk": {
+	"https://www.reebok.co.uk": {
 					 "parcer": "bs4",
 					 "price_tag_name": "span",
 					 "price_tag_name_2" : "",
@@ -9,7 +9,7 @@
 					 "title_attr_name": "data-auto-id",
 					 "title_attr_value": "product-title"
 					},
-	"www2.hm.com": {
+	"https://www2.hm.com": {
 				"parcer": "bs4",
 			   	"price_tag_name": "span",
 			   	"price_tag_name_2" : "",
@@ -19,7 +19,7 @@
 			   	"title_attr_name": "class",
 			   	"title_attr_value": "primary product-item-headline"
 			  },
-	"www.adidas.com": {
+	"https://www.adidas.com": {
 					"parcer": "bs4",
 				    "price_tag_name": "span",
 				    "price_tag_name_2" : "",
@@ -29,7 +29,7 @@
 				    "title_attr_name": "data-auto-id",
 				    "title_attr_value": "product-title"
 				  },
-	"www.gap.com": {
+	"https://www.gap.com": {
 				"parcer": "selenium",
 				"price_tag_name": "h2",
 				"price_tag_name_2" : "",
@@ -43,7 +43,21 @@
 				"title_attr_name": "class",
 				"title_attr_value": "product-title__text"
 			   },
-    "www.mountainwarehouse.com": {
+   "https://oldnavy.gap.com": {
+				"parcer": "selenium",
+				"price_tag_name": "h2",
+				"price_tag_name_2" : "",
+				"price_attr_name": "class",
+				"price_attr_values": ["product-price--pdp",
+									"product-price--pdp.product-price",
+									"pdp-pricing__selected ",
+									"product-price",
+									"pdp-pricing__selected pdp-pricing--highlight"],
+				"title_tag_name": "h1",
+				"title_attr_name": "class",
+				"title_attr_value": "product-title__text"
+			   },
+    "https://www.mountainwarehouse.com": {
 				"parcer": "bs4",
 				"price_tag_name": "span",
 				"price_tag_name_2" : "span",

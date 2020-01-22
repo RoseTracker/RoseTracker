@@ -16,6 +16,7 @@ from oauth2client.service_account import ServiceAccountCredentials
 import smtplib
 import json
 import time
+from time import localtime, strftime
 from colorama import Fore, Style
 
 
@@ -24,7 +25,7 @@ class PriceTracker(object):
         self.regex_url = re.compile(r'^(?:http|ftp)s?://')
         self.regex_email = '^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$'
         self.regex_domain = re.compile(
-            r'(www)(.*)([\.]+)(com|net|org|info|coop|int|co\.uk'
+            r'(www)?(.*)([\.]+)(.*)?([\.]+)?(com|net|org|info|coop|int|co\.uk'
             r'|org\.uk|ac\.uk|uk)'
         )
 
@@ -137,18 +138,20 @@ class PriceTracker(object):
                   f'is {Style.BRIGHT}"{your_price}"{Style.RESET_ALL}')
             if your_price > price:
                 self.send_email(email, shop_link, product_title, your_price, price)
-                result_message = (f'{Fore.GREEN}The price of {Style.BRIGHT}"'
-                            f'{product_title}"{Style.RESET_ALL}{Fore.GREEN}'
-                            f' is low enough. The email was sent.\n'
-                            f'{Style.RESET_ALL}')
-                return True, result_message
+                result_message = (f'{strftime("%Y-%m-%d %H:%M:%S", localtime())}\n'
+                                '*********************************\n'
+                                f'The price ({price}) of {product_title}'
+                                f' is low enough. The email was sent.\n'
+                                '*********************************\n')
+                return "cheap", result_message
             else:
-                result_message = (f'The price of "{product_title}" '
+                result_message = (f'{strftime("%Y-%m-%d %H:%M:%S", localtime())}\n'
+                                  f'The price of "{product_title}" '
                                   f'({price}) is still higher than your. You '
                                   f'should to wait.\n')
-                return False, result_message
+                return "expensive", result_message
         except Exception as error:
-            return False, str(error)
+            return False, f'{strftime("%Y-%m-%d %H:%M:%S", localtime())}\n{str(error)}'
 
     def parse_shop_list(self):
         for row in range(2, self.max_row_ws + 1):
@@ -156,7 +159,7 @@ class PriceTracker(object):
             parse_dict = self.gspread_data_checker(gspread_row_values)
             error = '\n'.join(parse_dict['error'])
             row_url = parse_dict['row_url']
-            domain = parse_dict['domain']
+            domain = parse_dict['domain'][8:]
             row_price = parse_dict['row_price']
             row_email = parse_dict['row_email']  
             row_repeat = parse_dict['row_repeat'] 
@@ -208,20 +211,19 @@ class PriceTracker(object):
                     print(f'{Fore.RED}The parser is wrong'
                                 f'{Style.RESET_ALL}\n')
                 
-                if result[0] is True:
+                if result[0] == "cheap":
                     self.ws.update_cell(row, 5, row_repeat - 1)
-                    self.ws.update_cell(row, 6, 'The price is low enough. '
-                                                'The email was sent.')
-                elif result[1] is False:
-                    self.ws.update_cell(row, 6, 'The price is still higher'
-                                                ' than your. You should to'
-                                                ' wait.')
+                    self.ws.update_cell(row, 6, result[1])
+                    print(f'{Fore.GREEN}{result[1]}{Style.RESET_ALL}\n')
+                elif result[0] == "expensive":
+                    self.ws.update_cell(row, 6, result[1])
+                    print(f'{Fore.MAGENTA}{result[1]}{Style.RESET_ALL}\n')
                 else:
                     self.ws.update_cell(row, 6, result[1])
-                print(f'{Style.BRIGHT}{result[1]}{Style.RESET_ALL}\n')
+                    print(f'{Fore.RED}{result[1]}{Style.RESET_ALL}\n')
             else:
                 self.ws.update_cell(row, 6, error)
-                print(f'{Style.BRIGHT}{error}{Style.RESET_ALL}\n')
+                print(f'{Fore.RED}{error}{Style.RESET_ALL}\n')
             
         self.disconnect_smtp()
 
