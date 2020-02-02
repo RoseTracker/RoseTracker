@@ -101,10 +101,14 @@ class PriceTracker(object):
 
         try:
             fireFoxOptions = webdriver.FirefoxOptions()
-            fireFoxOptions = Options()
-            fireFoxOptions.headless = True
+            #fireFoxOptions = Options()
+            fireFoxOptions.binary_location = os.environ.get("FIREFOX_BIN")
+            fireFoxOptions.add_argument("--headless")
+            fireFoxOptions.add_argument("--disable-dev-shm-usage")
+            fireFoxOptions.add_argument("--no-sandbox")
+            #ireFoxOptions.headless = True
             print('fireFoxOptions.headless = True - DONE')
-            browser = webdriver.Firefox(options=fireFoxOptions)
+            browser = webdriver.Firefox(executable_path=os.environ.get("GECKODRIVER_PATH"), options=fireFoxOptions)
             print(browser)
             browser.get(shop_link)
             print('browser.get(shop_link) - DONE')
