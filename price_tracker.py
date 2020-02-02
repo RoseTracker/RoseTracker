@@ -108,7 +108,7 @@ class PriceTracker(object):
             # fireFoxOptions.add_argument("--no-sandbox")
             fireFoxOptions.headless = True
             print('fireFoxOptions.headless = True - DONE')
-            browser = webdriver.Firefox(options=fireFoxOptions)
+            browser = webdriver.Firefox(executable_path=os.environ.get("GECKODRIVER_PATH"), options=fireFoxOptions)
             print(browser)
             browser.get(shop_link)
             print('browser.get(shop_link) - DONE')
